@@ -1,6 +1,6 @@
-CodTech Learning Platform 
+BackLog Academy Learning Platform 
 
-A complete online learning platform built as part of my internship at CodTech.  
+A complete online learning platform built as part of my project  
 It features user authentication, interactive lessons, quizzes, progress tracking, and certificate generation — all in a clean, responsive UI.
 
  Features
@@ -56,7 +56,7 @@ Feel free to explore, learn, or contribute!
 
  🎓 Acknowledgements
 
-Thanks to CodTech for the opportunity and guidance to build this project.  
+Thanks to Kristu Jayanti Uni for the opportunity and guidance to build this project.  
 Special shoutout to my learning journey and late-night debugging sessions 😅
 
 
