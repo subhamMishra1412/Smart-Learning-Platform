@@ -1,4 +1,4 @@
-BackLog Academy Learning Platform 
+Smart Learning Platform 
 
 A complete online learning platform built as part of my project  
 It features user authentication, interactive lessons, quizzes, progress tracking, and certificate generation — all in a clean, responsive UI.
