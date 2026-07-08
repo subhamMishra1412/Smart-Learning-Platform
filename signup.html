@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>Sign Up | Smart Learning</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .auth-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #f0f4f8, #e2e8f0); padding: 20px; font-family: 'Poppins', sans-serif; }
+  .auth-card { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 450px; }
+  .auth-card h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 28px; text-align: center; }
+  .auth-card p { text-align: center; color: #64748b; margin-bottom: 30px; }
+  
+  .form-group { margin-bottom: 15px; position: relative; }
+  .form-group i { position: absolute; left: 15px; top: 16px; color: #94a3b8; }
+  .form-group input { width: 100%; padding: 15px 15px 15px 45px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; transition: 0.3s; box-sizing: border-box; }
+  .form-group input:focus { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+  .error-text { color: #ef4444; font-size: 12px; margin-top: 5px; display: block; min-height: 15px; font-weight: 500; padding-left: 5px; }
+  
+  .auth-btn { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
+  .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79,70,229,0.3); }
+
+  .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 14px; }
+  .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+  .divider::before { margin-right: .25em; }
+  .divider::after { margin-left: .25em; }
+
+  .google-btn { background: white; color: #334155; border: 2px solid #e2e8f0; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; width: 100%; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+  .google-btn:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-2px); }
+  
+  .auth-link { text-align: center; margin-top: 25px; font-size: 14px; color: #64748b; }
+  .auth-link a { color: #4f46e5; font-weight: 600; text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Create Account</h2>
+    <p>Join the Smart Learning Platform today.</p>
+
+    <form id="signupForm">
+      <div class="form-group">
+        <i class="fa-solid fa-user"></i>
+        <input type="text" id="name" placeholder="Full Name" required>
+      </div>
+
+      <div class="form-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="email" placeholder="Email Address" required>
+        <span id="emailError" class="error-text"></span>
+      </div>
+
+      <div class="form-group">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="password" placeholder="Password (Min 6 chars)" required>
+        <span id="passError" class="error-text"></span>
+      </div>
+
+      <div class="form-group">
+        <i class="fa-solid fa-check-double"></i>
+        <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+        <span id="matchError" class="error-text"></span>
+      </div>
+
+      <button type="submit" id="submitBtn" class="auth-btn">Sign Up</button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <button type="button" id="googleBtn" class="google-btn">
+      <i class="fa-brands fa-google" style="color: #DB4437; font-size: 18px;"></i>
+      Sign up with Google
+    </button>
+
+    <div class="auth-link">
+      Already have an account? <a href="login.html">Log in here</a>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, updateProfile, signInWithPopup, GoogleAuthProvider, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const app = initializeApp({ apiKey: "AIzaSyByvV7dtN68WksQtK81GscJYUDIrtCNqmQ", authDomain: "smart-learning-platform-f3dc3.firebaseapp.com", projectId: "smart-learning-platform-f3dc3" });
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// Redirect if already logged in
+onAuthStateChanged(auth, user => { if (user) window.location.replace("dashboard.html"); });
+
+// --- REAL-TIME INLINE VALIDATION ---
+const emailInput = document.getElementById("email");
+const passInput = document.getElementById("password");
+const confirmInput = document.getElementById("confirmPassword");
+
+emailInput.addEventListener("blur", () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  document.getElementById("emailError").innerText = !emailRegex.test(emailInput.value) && emailInput.value !== "" ? "Please enter a valid email format." : "";
+});
+
+passInput.addEventListener("input", () => {
+  document.getElementById("passError").innerText = (passInput.value.length < 6 && passInput.value.length > 0) ? "Password must be at least 6 characters." : "";
+});
+
+confirmInput.addEventListener("input", () => {
+  document.getElementById("matchError").innerText = (confirmInput.value !== passInput.value && confirmInput.value !== "") ? "Passwords do not match!" : "";
+});
+
+// --- SUBMIT TRADITIONAL SIGNUP ---
+document.getElementById("signupForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = document.getElementById("name").value;
+  
+  if (passInput.value.length < 6 || confirmInput.value !== passInput.value) {
+    return alert("Please fix the errors in red before submitting!");
+  }
+  
+  try {
+    const userCredential = await createUserWithEmailAndPassword(auth, emailInput.value, passInput.value);
+    await updateProfile(userCredential.user, { displayName: name });
+  } catch (error) {
+    if (error.code === 'auth/email-already-in-use') alert("This email is already registered.");
+    else alert("Signup Error: " + error.message);
+  }
+});
+
+// --- GOOGLE SIGNUP ---
+document.getElementById("googleBtn").addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Google Sign-In Failed:", error);
+  }
+});
+</script>
+</body>
+</html>

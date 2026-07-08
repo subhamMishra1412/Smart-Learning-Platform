@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>Login | Smart Learning</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .auth-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #f0f4f8, #e2e8f0); padding: 20px; font-family: 'Poppins', sans-serif; }
+  .auth-card { background: white; padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); width: 100%; max-width: 450px; }
+  .auth-card h2 { margin: 0 0 10px 0; color: #1e293b; font-size: 28px; text-align: center; }
+  .auth-card p { text-align: center; color: #64748b; margin-bottom: 30px; }
+  
+  .form-group { margin-bottom: 15px; position: relative; }
+  .form-group i { position: absolute; left: 15px; top: 16px; color: #94a3b8; }
+  .form-group input { width: 100%; padding: 15px 15px 15px 45px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; transition: 0.3s; box-sizing: border-box; }
+  .form-group input:focus { border-color: #4f46e5; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+  .error-text { color: #ef4444; font-size: 12px; margin-top: 5px; display: block; min-height: 15px; font-weight: 500; padding-left: 5px; }
+  
+  .auth-btn { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; padding: 15px; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 10px; }
+  .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(79,70,229,0.3); }
+
+  .divider { display: flex; align-items: center; text-align: center; margin: 25px 0; color: #94a3b8; font-size: 14px; }
+  .divider::before, .divider::after { content: ''; flex: 1; border-bottom: 1px solid #e2e8f0; }
+  .divider::before { margin-right: .25em; }
+  .divider::after { margin-left: .25em; }
+
+  .google-btn { background: white; color: #334155; border: 2px solid #e2e8f0; padding: 14px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; width: 100%; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 10px; }
+  .google-btn:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-2px); }
+  
+  .auth-link { text-align: center; margin-top: 25px; font-size: 14px; color: #64748b; }
+  .auth-link a { color: #4f46e5; font-weight: 600; text-decoration: none; cursor: pointer;}
+  
+  /* NEW CLASSES FOR RECOVERY LINKS */
+  .recovery-links { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 20px; padding: 0 5px; }
+  .recovery-links a { color: #4f46e5; text-decoration: none; font-weight: 500; cursor: pointer; }
+  .recovery-links a:hover { text-decoration: underline; }
+  
+  /* Hide the reset view by default */
+  #reset-view { display: none; }
+</style>
+</head>
+<body>
+
+<div class="auth-container">
+  <div class="auth-card">
+    
+    <div id="login-view">
+      <h2>Welcome Back</h2>
+      <p>Log in to access your dashboard.</p>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <i class="fa-solid fa-envelope"></i>
+          <input type="email" id="email" placeholder="Email Address" required>
+          <span id="emailError" class="error-text"></span>
+        </div>
+
+        <div class="form-group">
+          <i class="fa-solid fa-lock"></i>
+          <input type="password" id="password" placeholder="Password" required>
+          <span id="passError" class="error-text"></span>
+        </div>
+
+        <div class="recovery-links">
+            <a onclick="forgotEmail()">Forgot Email?</a>
+            <a onclick="toggleView('reset-view')">Forgot Password?</a>
+        </div>
+
+        <button type="submit" id="submitBtn" class="auth-btn">Sign In</button>
+      </form>
+
+      <div class="divider">OR</div>
+
+      <button type="button" id="googleBtn" class="google-btn">
+        <i class="fa-brands fa-google" style="color: #DB4437; font-size: 18px;"></i>
+        Log in with Google
+      </button>
+
+      <div class="auth-link">
+        Don't have an account? <a href="signup.html">Create one here</a>
+      </div>
+    </div>
+
+    <div id="reset-view">
+      <h2>Reset Password</h2>
+      <p>Enter your email to receive a reset link.</p>
+
+      <div class="form-group">
+        <i class="fa-solid fa-envelope"></i>
+        <input type="email" id="reset-email" placeholder="Enter registered email">
+      </div>
+      
+      <button type="button" onclick="resetPassword()" class="auth-btn">Send Reset Link</button>
+      <p id="reset-message" style="text-align: center; font-size: 13px; margin-top: 15px; min-height: 15px;"></p>
+
+      <div class="auth-link">
+        <a onclick="toggleView('login-view')"><i class="fa-solid fa-arrow-left"></i> Back to Login</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, onAuthStateChanged, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const app = initializeApp({ apiKey: "AIzaSyByvV7dtN68WksQtK81GscJYUDIrtCNqmQ", authDomain: "smart-learning-platform-f3dc3.firebaseapp.com", projectId: "smart-learning-platform-f3dc3" });
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
+
+// Redirect if already logged in
+onAuthStateChanged(auth, user => { if (user) window.location.replace("dashboard.html"); });
+
+// --- VIEW TOGGLE LOGIC ---
+window.toggleView = function(viewId) {
+    if (viewId === 'reset-view') {
+        document.getElementById('login-view').style.display = 'none';
+        document.getElementById('reset-view').style.display = 'block';
+        document.getElementById('reset-message').innerText = ""; // Clear old messages
+    } else {
+        document.getElementById('reset-view').style.display = 'none';
+        document.getElementById('login-view').style.display = 'block';
+    }
+}
+
+// --- FORGOT EMAIL LOGIC (Placeholder) ---
+window.forgotEmail = function() {
+    alert("To recover your registered email, please contact the System Administrator at subhammishra1412@gmail.com");
+}
+
+// --- REAL-TIME INLINE VALIDATION ---
+const emailInput = document.getElementById("email");
+const passInput = document.getElementById("password");
+
+emailInput.addEventListener("blur", () => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  document.getElementById("emailError").innerText = !emailRegex.test(emailInput.value) && emailInput.value !== "" ? "Please enter a valid email format." : "";
+});
+
+// --- SUBMIT TRADITIONAL LOGIN ---
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(emailInput.value)) {
+    return document.getElementById("emailError").innerText = "Please enter a valid email format.";
+  }
+
+  try {
+    await signInWithEmailAndPassword(auth, emailInput.value, passInput.value);
+  } catch (error) {
+    document.getElementById("passError").innerText = "Invalid email or password. Please try again.";
+  }
+});
+
+// --- GOOGLE LOGIN ---
+document.getElementById("googleBtn").addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, provider);
+  } catch (error) {
+    console.error("Google Sign-In Failed:", error);
+  }
+});
+
+// --- FORGOT PASSWORD LOGIC ---
+window.resetPassword = function() {
+  const resetEmailInput = document.getElementById('reset-email').value;
+  const messageBox = document.getElementById('reset-message');
+
+  if (!resetEmailInput) {
+    messageBox.innerText = "Please enter your email address first.";
+    messageBox.style.color = "#ef4444"; 
+    return;
+  }
+
+  sendPasswordResetEmail(auth, resetEmailInput)
+    .then(() => {
+      messageBox.innerText = "Password reset link sent! Check your inbox.";
+      messageBox.style.color = "green";
+      document.getElementById('reset-email').value = ""; 
+    })
+    .catch((error) => {
+      if (error.code === 'auth/user-not-found') {
+         messageBox.innerText = "No account found with this email.";
+      } else {
+         messageBox.innerText = error.message;
+      }
+      messageBox.style.color = "#ef4444"; 
+    });
+}
+</script>
+</body>
+</html>

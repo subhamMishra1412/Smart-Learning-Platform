@@ -1,0 +1,23 @@
+.quiz-section button {
+  background-color: #4f46e5;
+  color: #ffffff;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 500;
+  margin-top: 15px;
+  transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2);
+}
+
+.quiz-section button:hover {
+  background-color: #3730a3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(79, 70, 229, 0.3);
+}
+
+.quiz-section button:active {
+  transform: scale(0.97);
+}

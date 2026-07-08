@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>Dashboard | Smart Learning</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .dash-header { 
+    background: linear-gradient(135deg, rgba(15,23,42,0.95), rgba(79,70,229,0.9)), url('https://images.unsplash.com/photo-1550592704-6c76defa99ce?auto=format&fit=crop&w=1200&q=80') center/cover; 
+    color: white; padding: 50px 40px; border-radius: 24px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 20px 40px rgba(79,70,229,0.25); margin-bottom: 40px; animation: fadeInUp 0.8s ease-out;
+  }
+  .header-text h2 { font-size: 34px; margin: 0 0 5px 0; font-weight: 700; }
+  .header-text p { color: #cbd5e1; margin: 0; font-size: 16px; }
+  
+  .stat-card { background: rgba(255,255,255,0.1); backdrop-filter: blur(12px); padding: 25px 35px; border-radius: 20px; text-align: center; color: white; border: 1px solid rgba(255,255,255,0.2); min-width: 160px; transition: transform 0.3s; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+  .stat-card:hover { transform: translateY(-5px); }
+  .stat-card h3 { font-size: 36px; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+  .stat-card p { margin: 5px 0 0 0; font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+  
+  .course-row { display: flex; align-items: center; justify-content: space-between; background: white; padding: 25px; border-radius: 16px; margin-bottom: 15px; border: 1px solid #e2e8f0; transition: 0.3s; box-shadow: 0 5px 15px rgba(0,0,0,0.02); animation: fadeInUp 1s ease-out backwards; }
+  .course-row:hover { transform: translateX(5px); border-left: 5px solid #4f46e5; box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
+  .course-info { display: flex; align-items: center; gap: 20px; }
+  .course-icon { width: 55px; height: 55px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 26px; color: white; box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+  .course-info h4 { margin: 0 0 8px 0; font-size: 20px; color: #1e293b; font-weight: 700; }
+  
+  .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+  .status-done { background: #d1fae5; color: #059669; }
+  .status-pending { background: #fef3c7; color: #d97706; }
+  
+  .action-btn { padding: 12px 22px; border-radius: 12px; font-weight: bold; text-decoration: none; border: none; cursor: pointer; transition: 0.3s; display: inline-flex; align-items: center; gap: 8px; font-size: 14px; }
+  .btn-continue { background: #eff6ff; color: #4f46e5; }
+  .btn-continue:hover { background: #4f46e5; color: white; transform: translateY(-2px); }
+  .btn-cert { background: linear-gradient(135deg, #10b981, #059669); color: white; box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3); }
+  .btn-cert:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(16, 185, 129, 0.4); }
+
+  .nav-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-left: 10px; transition: 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .nav-btn:hover { background: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <h1><i class="fa-solid fa-graduation-cap"></i> Smart Learning</h1>
+  <nav style="display: flex; align-items: center;">
+    <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+    <div class="nav-profile">
+      <img src="" id="navAvatar" class="avatar-btn" alt="Profile">
+      <div class="dropdown-menu">
+        <div class="dropdown-header">
+          <h4 id="navName">Loading...</h4>
+          <p id="navEmail">...</p>
+        </div>
+        <a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profile Settings</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main style="padding: 40px; max-width: 1100px; margin: auto;">
+  
+  <div class="dash-header">
+    <div class="header-text">
+      <h2><i class="fa-solid fa-chart-line" style="color:#818cf8;"></i> Learning Analytics</h2>
+      <p>Track your course progress and download your certificates.</p>
+    </div>
+    <div style="display: flex; gap: 20px;">
+      <div class="stat-card">
+        <h3 id="statCompleted">0</h3><p><i class="fa-solid fa-check-double"></i> Modules Done</p>
+      </div>
+      <div class="stat-card">
+        <h3 id="statProgress">0%</h3><p><i class="fa-solid fa-percent"></i> Total Progress</p>
+      </div>
+    </div>
+  </div>
+
+  <h3 style="font-size: 24px; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; margin-bottom: 25px;">
+    <i class="fa-solid fa-book-open" style="color:#4f46e5;"></i> Core Curriculum (6 Tracks)
+  </h3>
+  <div id="coursesContainer"></div>
+
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const auth = getAuth(initializeApp({ apiKey: "AIzaSyByvV7dtN68WksQtK81GscJYUDIrtCNqmQ", authDomain: "smart-learning-platform-f3dc3.firebaseapp.com", projectId: "smart-learning-platform-f3dc3" }));
+
+const courseList = [
+  { title: "Web Development", file: "webdev.html", key: "webdev_m1", theme: "#e34c26", icon: "fa-brands fa-html5" },
+  { title: "JavaScript Fundamentals", file: "javascript.html", key: "js_m1", theme: "#f7df1e", icon: "fa-brands fa-js" },
+  { title: "Python Programming", file: "python.html", key: "python_m1", theme: "#2563eb", icon: "fa-brands fa-python" },
+  { title: "React.js Essentials", file: "react.html", key: "react_m1", theme: "#06b6d4", icon: "fa-brands fa-react" },
+  { title: "Node.js Backend", file: "nodejs.html", key: "nodejs_m1", theme: "#16a34a", icon: "fa-brands fa-node-js" },
+  { title: "Data Science with Python", file: "datascience.html", key: "ds_m1", theme: "#4c1d95", icon: "fa-solid fa-chart-pie" }
+];
+
+let globalUserName = "";
+
+onAuthStateChanged(auth, user => {
+  if (!user) { window.location.replace("login.html"); return; }
+  
+  globalUserName = user.displayName || user.email.split('@')[0];
+  
+  document.getElementById("navAvatar").src = `https://api.dicebear.com/7.x/initials/svg?seed=${globalUserName}&backgroundColor=4f46e5,3b82f6`;
+  document.getElementById("navName").innerText = globalUserName;
+  document.getElementById("navEmail").innerText = user.email;
+  
+  let completedCount = 0;
+  const container = document.getElementById("coursesContainer");
+  container.innerHTML = "";
+
+  courseList.forEach((course, index) => {
+    const isDone = localStorage.getItem(user.email + "_" + course.key) === "true";
+    if(isDone) completedCount++;
+
+    const badgeHTML = isDone 
+      ? `<span class="status-badge status-done"><i class="fa-solid fa-check"></i> Completed</span>` 
+      : `<span class="status-badge status-pending"><i class="fa-solid fa-hourglass-half"></i> In Progress</span>`;
+      
+    const btnHTML = isDone 
+      ? `<button class="action-btn btn-cert" onclick="downloadCert('${course.title}', '${course.theme}', this)"><i class="fa-solid fa-award"></i> Download Certificate</button>`
+      : `<a href="${course.file}" class="action-btn btn-continue">Continue <i class="fa-solid fa-arrow-right"></i></a>`;
+
+    container.innerHTML += `
+      <div class="course-row" style="animation-delay: ${index * 0.1}s;">
+        <div class="course-info">
+          <div class="course-icon" style="background: ${course.theme};"><i class="${course.icon}"></i></div>
+          <div>
+            <h4>${course.title}</h4>
+            ${badgeHTML}
+          </div>
+        </div>
+        <div>${btnHTML}</div>
+      </div>`;
+  });
+
+  document.getElementById("statCompleted").innerText = completedCount;
+  document.getElementById("statProgress").innerText = Math.round((completedCount / courseList.length) * 100) + "%";
+});
+
+window.downloadCert = function(title, theme, btnElement) {
+  const originalHtml = btnElement.innerHTML;
+  btnElement.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Generating PDF...`;
+  btnElement.style.opacity = "0.7";
+  btnElement.disabled = true;
+
+  const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+
+  // Outer div is slightly smaller than the PDF page so the border never gets clipped.
+  // The border lives on the INNER div (100% w/h) so html2canvas captures all 4 sides fully.
+  const certHTML = `
+    <div style="width: 1010px; height: 778px; background: #ffffff; font-family: Georgia, serif; box-sizing: border-box; overflow: hidden;">
+      <div style="width: 100%; height: 100%; box-sizing: border-box; border: 16px solid ${theme}; padding: 52px 72px;">
+
+        <div style="text-align: center; border-bottom: 1.5px solid #e2e8f0; padding-bottom: 20px; margin-bottom: 20px;">
+          <p style="font-size: 12px; color: #94a3b8; letter-spacing: 5px; text-transform: uppercase; margin: 0 0 8px 0;">Smart Learning Platform</p>
+          <h1 style="font-size: 28px; color: ${theme}; text-transform: uppercase; letter-spacing: 5px; margin: 0; font-weight: normal;">Certificate of Completion</h1>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 20px;">
+          <p style="font-size: 16px; color: #64748b; font-style: italic; margin: 0 0 10px 0;">This certificate is proudly presented to</p>
+          <p style="font-size: 52px; color: #1e293b; margin: 0 0 6px 0; font-weight: bold;">${globalUserName}</p>
+          <p style="font-size: 16px; color: #64748b; margin: 0;">for successfully completing the course</p>
+        </div>
+
+        <div style="text-align: center; background: ${theme}22; border-left: 5px solid ${theme}; border-right: 5px solid ${theme}; padding: 16px 40px; margin-bottom: 36px;">
+          <h2 style="font-size: 32px; color: ${theme}; margin: 0; font-weight: bold;">${title}</h2>
+        </div>
+
+        <div style="display: table; width: 80%; margin: 0 auto;">
+          <div style="display: table-cell; width: 50%; text-align: center; padding: 0 30px;">
+            <p style="font-size: 17px; color: #1e293b; border-bottom: 2px solid #94a3b8; padding-bottom: 8px; margin: 0 0 8px 0;">${date}</p>
+            <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin: 0;">Date Issued</p>
+          </div>
+          <div style="display: table-cell; width: 50%; text-align: center; padding: 0 30px;">
+            <p style="font-size: 30px; font-family: 'Brush Script MT', cursive; color: #1e293b; border-bottom: 2px solid #94a3b8; padding-bottom: 8px; margin: 0 0 8px 0;">Smart Learning</p>
+            <p style="font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; margin: 0;">Authorized Signature</p>
+          </div>
+        </div>
+
+      </div>
+    </div>`;
+
+  html2pdf().set({ 
+    margin: 0, 
+    filename: `${globalUserName}_${title}_Certificate.pdf`, 
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, useCORS: true, width: 1010, height: 778 }, 
+    jsPDF: { unit: 'in', format: 'letter', orientation: 'landscape' } 
+  }).from(certHTML).save().then(() => {
+    btnElement.innerHTML = originalHtml;
+    btnElement.style.opacity = "1";
+    btnElement.disabled = false;
+  });
+};
+</script>
+</body>
+</html>

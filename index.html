@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><title>Smart Learning Platform</title><link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    .nav-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-left: 10px; transition: 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+    .nav-btn:hover { background: rgba(255,255,255,0.3); color: white; }
+  </style>
+</head>
+<body>
+<header class="navbar">
+  <a href="index.html" style="text-decoration:none; color:inherit;">
+    <h1 style="margin:0;"><i class="fa-solid fa-graduation-cap"></i> Smart Learning</h1>
+  </a>
+  <nav style="display: flex; align-items: center;">
+    
+    <a href="login.html" id="nav-login" class="nav-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+    
+    <div class="nav-profile" id="nav-profile" style="display: none;">
+      <img src="" id="navAvatar" class="avatar-btn" alt="Profile">
+      <div class="dropdown-menu">
+        <div class="dropdown-header">
+          <h4 id="navName">Loading...</h4>
+          <p id="navEmail">...</p>
+        </div>
+        <a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> My Dashboard</a>
+        <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profile Settings</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <h2><i class="fa-solid fa-rocket"></i> Master Your Tech Skills</h2>
+  <p>Learn coding, practice your skills, and track your growth — all in one beautifully designed platform.</p>
+  <a href="#courseSection" class="cta-btn">Start Learning Now <i class="fa-solid fa-arrow-down"></i></a>
+</section>
+
+<section id="courseSection" class="courses">
+  <div style="position: relative;">
+    <i class="fa-solid fa-magnifying-glass" style="position: absolute; top: 38px; left: 20px; color: #94a3b8; font-size: 18px;"></i>
+    <input type="text" id="searchCourse" placeholder="Search for courses (e.g., Node, React, Python)..." style="padding-left: 50px;">
+  </div>
+
+  <div class="course-list" id="courseList">
+    <div class="course-card">
+      <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="HTML CSS">
+      <div class="card-content">
+        <h4><i class="fa-brands fa-html5" style="color: #e34c26;"></i> Web Development</h4>
+        <p>HTML & CSS fundamentals for building beautiful websites.</p>
+        <a href="webdev.html">View Course <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="JS">
+      <div class="card-content">
+        <h4><i class="fa-brands fa-js" style="color: #f7df1e;"></i> JavaScript Basics</h4>
+        <p>Master core JS concepts, DOM manipulation, and logic.</p>
+        <a href="javascript.html">View Course <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="https://images.unsplash.com/photo-1526379095098-d400fd0bf935?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Python">
+      <div class="card-content">
+        <h4><i class="fa-brands fa-python" style="color: #2563eb;"></i> Python Programming</h4>
+        <p>Learn Python from scratch. Syntax, loops, and functions.</p>
+        <a href="python.html">View Course <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="React">
+      <div class="card-content">
+        <h4><i class="fa-brands fa-react" style="color: #06b6d4;"></i> React.js Essentials</h4>
+        <p>Build modern Single Page Applications using Hooks.</p>
+        <a href="react.html">View Course <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Node">
+      <div class="card-content">
+        <h4><i class="fa-brands fa-node-js" style="color: #16a34a;"></i> Node.js Backend</h4>
+        <p>Create powerful servers, APIs, and use NPM packages.</p>
+        <a href="nodejs.html">View Course <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+    <div class="course-card">
+      <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Data Science">
+      <div class="card-content">
+        <h4><i class="fa-solid fa-chart-pie" style="color: #4c1d95;"></i> Data Science</h4>
+        <p>Analyze data using Pandas, NumPy, and Matplotlib.</p>
+        <a href="datascience.html">View Course <i class="fa-solid fa-chevron-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+  const auth = getAuth(initializeApp({ apiKey: "AIzaSyByvV7dtN68WksQtK81GscJYUDIrtCNqmQ", authDomain: "smart-learning-platform-f3dc3.firebaseapp.com", projectId: "smart-learning-platform-f3dc3" }));
+
+  // SEARCH LOGIC
+  document.getElementById("searchCourse").addEventListener("keyup", e => {
+    const val = e.target.value.toLowerCase();
+    document.querySelectorAll(".course-card").forEach(c => {
+      c.style.display = c.innerText.toLowerCase().includes(val) ? "block" : "none";
+    });
+  });
+
+  // DYNAMIC NAVBAR
+  onAuthStateChanged(auth, user => {
+    if (user) {
+      document.getElementById("nav-login").style.display = "none";
+      document.getElementById("nav-profile").style.display = "inline-block";
+
+      const name = user.displayName || user.email.split('@')[0];
+      document.getElementById("navAvatar").src = `https://api.dicebear.com/7.x/initials/svg?seed=${name}&backgroundColor=4f46e5,3b82f6`;
+      document.getElementById("navName").innerText = name;
+      document.getElementById("navEmail").innerText = user.email;
+    }
+  });
+</script>
+</body>
+</html>

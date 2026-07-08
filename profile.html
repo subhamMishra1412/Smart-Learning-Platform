@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>My Profile | Smart Learning</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .nav-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-left: 10px; transition: 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .nav-btn:hover { background: rgba(255,255,255,0.3); }
+
+  /* Two Column Profile Layout */
+  .profile-container { max-width: 1100px; margin: 60px auto; padding: 0 20px; display: grid; grid-template-columns: 1fr 2fr; gap: 30px; animation: fadeInUp 0.8s ease-out; }
+  
+  @media (max-width: 768px) { .profile-container { grid-template-columns: 1fr; } }
+
+  /* Left Side: ID Card */
+  .id-card { background: white; border-radius: 24px; padding: 40px 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); text-align: center; border: 1px solid #e2e8f0; height: fit-content; }
+  .large-avatar { width: 140px; height: 140px; border-radius: 50%; border: 5px solid #e0e7ff; box-shadow: 0 10px 25px rgba(79,70,229,0.2); margin: 0 auto 20px auto; display: block; object-fit: cover; }
+  .badge { display: inline-block; background: #e0e7ff; color: #4f46e5; padding: 6px 15px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+  .join-date { color: #94a3b8; font-size: 13px; margin-top: 15px; font-weight: 500; }
+  
+  /* The Exclusive Logout Button */
+  .logout-btn-main { background: #fee2e2; color: #ef4444; border: 2px solid #fca5a5; padding: 14px 20px; border-radius: 12px; font-weight: bold; font-size: 15px; cursor: pointer; margin-top: 30px; width: 100%; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .logout-btn-main:hover { background: #ef4444; color: white; border-color: #ef4444; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(239, 68, 68, 0.3); }
+
+  /* Right Side: Settings Card */
+  .settings-card { background: white; border-radius: 24px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; }
+  .settings-card h3 { margin-top: 0; color: #1e293b; font-size: 24px; border-bottom: 2px solid #f1f5f9; padding-bottom: 15px; margin-bottom: 30px; }
+  
+  .form-group { text-align: left; margin-top: 25px; }
+  .form-group label { display: block; font-weight: 600; color: #475569; margin-bottom: 8px; font-size: 14px; }
+  .form-group input { width: 100%; padding: 15px 20px; border: 2px solid #e2e8f0; border-radius: 12px; font-size: 15px; outline: none; transition: 0.3s; background: #f8fafc; color: #1e293b; font-family: inherit; }
+  .form-group input:focus { border-color: #4f46e5; background: white; box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1); }
+  .form-group input:disabled { color: #94a3b8; cursor: not-allowed; opacity: 0.7; }
+  
+  .save-btn { background: linear-gradient(135deg, #4f46e5, #3b82f6); color: white; border: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; font-size: 16px; cursor: pointer; margin-top: 30px; transition: 0.3s; box-shadow: 0 10px 20px rgba(79,70,229,0.3); display: inline-flex; align-items: center; gap: 10px; }
+  .save-btn:hover { transform: translateY(-3px); box-shadow: 0 15px 25px rgba(79,70,229,0.4); }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <h1><i class="fa-solid fa-graduation-cap"></i> Smart Learning</h1>
+  <nav style="display: flex; align-items: center;">
+    <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+    
+    <div class="nav-profile">
+      <img src="" id="navAvatar" class="avatar-btn" alt="Profile">
+      <div class="dropdown-menu">
+        <div class="dropdown-header">
+          <h4 id="navName">Loading...</h4>
+          <p id="navEmail">...</p>
+        </div>
+        <a href="dashboard.html"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="profile.html"><i class="fa-solid fa-user-gear"></i> Profile Settings</a>
+        </div>
+    </div>
+  </nav>
+</header>
+
+<div class="profile-container">
+  
+  <div class="id-card">
+    <div class="badge"><i class="fa-solid fa-star"></i> Pro Student</div>
+    <img src="" id="profileAvatar" class="large-avatar" alt="Avatar">
+    <h2 id="displayName" style="margin: 0; color: #1e293b; font-size: 28px; font-weight: 700;">Loading...</h2>
+    <p style="color: #64748b; font-weight: 500; margin-top: 5px;"><i class="fa-solid fa-envelope"></i> <span id="displayEmail">...</span></p>
+    <p class="join-date"><i class="fa-solid fa-calendar-days"></i> Joined: <span id="joinDateText">Loading...</span></p>
+
+    <button id="mainLogoutBtn" class="logout-btn-main">
+      <i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out of Account
+    </button>
+  </div>
+
+  <div class="settings-card">
+    <h3><i class="fa-solid fa-sliders" style="color:#4f46e5;"></i> Personal Information</h3>
+    
+    <div class="form-group">
+      <label>Full Display Name</label>
+      <input type="text" id="editName" placeholder="Enter your full name">
+    </div>
+
+    <div class="form-group">
+      <label>Account Email (Used for login, cannot be changed)</label>
+      <input type="email" id="editEmail" disabled>
+    </div>
+
+    <button id="saveProfileBtn" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Update Profile Info</button>
+    <p id="profileMessage" style="margin-top: 20px; font-weight: 600; font-size: 15px;"></p>
+  </div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, updateProfile, signOut } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+const auth = getAuth(initializeApp({ apiKey: "AIzaSyByvV7dtN68WksQtK81GscJYUDIrtCNqmQ", authDomain: "smart-learning-platform-f3dc3.firebaseapp.com", projectId: "smart-learning-platform-f3dc3" }));
+
+let currentUser = null;
+
+onAuthStateChanged(auth, user => {
+  if (!user) { window.location.replace("login.html"); return; }
+  currentUser = user;
+  
+  const name = user.displayName || user.email.split('@')[0];
+  
+  // Format Account Creation Date
+  const joinDate = new Date(user.metadata.creationTime).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  document.getElementById("joinDateText").innerText = joinDate;
+  
+  // Update Profile Data
+  document.getElementById("displayName").innerText = name;
+  document.getElementById("displayEmail").innerText = user.email;
+  document.getElementById("editName").value = user.displayName || "";
+  document.getElementById("editEmail").value = user.email;
+  document.getElementById("profileAvatar").src = `https://api.dicebear.com/7.x/initials/svg?seed=${name}&backgroundColor=4f46e5,3b82f6`;
+
+  // Update Navbar Data
+  document.getElementById("navAvatar").src = `https://api.dicebear.com/7.x/initials/svg?seed=${name}&backgroundColor=4f46e5,3b82f6`;
+  document.getElementById("navName").innerText = name;
+  document.getElementById("navEmail").innerText = user.email;
+});
+
+// Update Profile
+document.getElementById("saveProfileBtn").addEventListener("click", async () => {
+  const newName = document.getElementById("editName").value.trim();
+  const msg = document.getElementById("profileMessage");
+  
+  if(!newName) { msg.style.color = "#ef4444"; msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Name cannot be empty.'; return; }
+  
+  try {
+    const btn = document.getElementById("saveProfileBtn");
+    btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving...';
+    
+    await updateProfile(currentUser, { displayName: newName });
+    
+    msg.style.color = "#10b981"; msg.innerHTML = '<i class="fa-solid fa-circle-check"></i> Profile updated successfully!';
+    btn.innerHTML = '<i class="fa-solid fa-floppy-disk"></i> Update Profile Info';
+    
+    document.getElementById("displayName").innerText = newName;
+    const newAvatarUrl = `https://api.dicebear.com/7.x/initials/svg?seed=${newName}&backgroundColor=4f46e5,3b82f6`;
+    document.getElementById("profileAvatar").src = newAvatarUrl;
+    document.getElementById("navAvatar").src = newAvatarUrl;
+    document.getElementById("navName").innerText = newName;
+  } catch(e) {
+    msg.style.color = "#ef4444"; msg.innerHTML = '<i class="fa-solid fa-circle-exclamation"></i> Error updating profile.';
+  }
+});
+
+// The Main Logout Logic
+document.getElementById("mainLogoutBtn").addEventListener("click", () => { 
+  signOut(auth).then(() => {
+    window.location.replace("login.html"); 
+  });
+});
+</script>
+</body>
+</html>

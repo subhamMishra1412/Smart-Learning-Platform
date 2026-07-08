@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><title>Web Dev | Smart Learning</title>
+<link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+  .nav-btn { background: rgba(255,255,255,0.15); color: white; border: none; padding: 10px 18px; border-radius: 10px; cursor: pointer; font-weight: 600; margin-left: 10px; transition: 0.3s; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; }
+  .nav-btn:hover { background: rgba(255,255,255,0.3); }
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <h1><i class="fa-solid fa-graduation-cap"></i> Smart Learning</h1>
+  <nav>
+    <a href="index.html" class="nav-btn"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="dashboard.html" class="nav-btn"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+  </nav>
+</header>
+
+<div class="course-layout">
+  
+  <div class="course-hero">
+    <h2><i class="fa-brands fa-html5" style="color: #fca5a5;"></i> Web Development</h2>
+    <p>Master the foundational languages of the web: HTML & CSS.</p>
+  </div>
+
+  <div class="video-container">
+    <iframe src="https://www.youtube.com/embed/qz0aGYrrlhU" frameborder="0" allowfullscreen></iframe>
+  </div>
+
+  <div class="quiz-wrapper">
+    <h3><i class="fa-solid fa-clipboard-question" style="color: #4f46e5;"></i> Knowledge Check (Pass: 80%)</h3>
+    <form id="quizForm">
+      
+      <div class="question-block">
+        <p>1. What does HTML stand for?</p>
+        <label class="option-label"><input type="radio" name="q1" value="wrong"> Hyper Tool ML</label>
+        <label class="option-label"><input type="radio" name="q1" value="correct"> Hyper Text Markup Language</label>
+      </div>
+
+      <div class="question-block">
+        <p>2. Which tag is used for the largest heading?</p>
+        <label class="option-label"><input type="radio" name="q2" value="wrong"> &lt;heading&gt;</label>
+        <label class="option-label"><input type="radio" name="q2" value="correct"> &lt;h1&gt;</label>
+      </div>
+
+      <div class="question-block">
+        <p>3. What is the correct HTML element for inserting a line break?</p>
+        <label class="option-label"><input type="radio" name="q3" value="correct"> &lt;br&gt;</label>
+        <label class="option-label"><input type="radio" name="q3" value="wrong"> &lt;break&gt;</label>
+      </div>
+
+      <div class="question-block">
+        <p>4. Choose the correct HTML element to define important text:</p>
+        <label class="option-label"><input type="radio" name="q4" value="correct"> &lt;strong&gt;</label>
+        <label class="option-label"><input type="radio" name="q4" value="wrong"> &lt;important&gt;</label>
+      </div>
+
+      <div class="question-block">
+        <p>5. Which attribute provides advisory text about an element?</p>
+        <label class="option-label"><input type="radio" name="q5" value="wrong"> alt</label>
+        <label class="option-label"><input type="radio" name="q5" value="correct"> title</label>
+      </div>
+
+      <button type="submit" class="quiz-submit"><i class="fa-solid fa-paper-plane"></i> Submit Answers</button>
+      <p id="result" style="font-weight:bold; margin-top:15px; text-align:center; font-size: 18px;"></p>
+    </form>
+  </div>
+</div>
+
+<a href="mailto:support@smartlearning.com" class="feedback-btn"><i class="fa-solid fa-bug"></i> Report Issue</a>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+const auth = getAuth(initializeApp({ apiKey: "AIzaSyByvV7dtN68WksQtK81GscJYUDIrtCNqmQ", authDomain: "smart-learning-platform-f3dc3.firebaseapp.com", projectId: "smart-learning-platform-f3dc3" }));
+let uEmail = null; 
+onAuthStateChanged(auth, u => { if(!u) window.location.replace("login.html"); uEmail = u.email; });
+
+document.getElementById("quizForm").addEventListener("submit", e => {
+  e.preventDefault(); let score = 0;
+  for(let i=1; i<=5; i++){ const ans = document.querySelector(`input[name="q${i}"]:checked`); if(ans && ans.value==="correct") score++; }
+  const res = document.getElementById("result");
+  if(score >= 4) { 
+    localStorage.setItem(uEmail + "_webdev_m1", "true"); 
+    res.innerHTML = `<i class="fa-solid fa-circle-check"></i> Passed! (${score}/5). Redirecting...`; 
+    res.style.color = "#059669"; setTimeout(() => window.location.replace("dashboard.html"), 1500); 
+  } else { 
+    res.innerHTML = `<i class="fa-solid fa-circle-xmark"></i> Failed (${score}/5). You need 4 to pass.`; 
+    res.style.color = "#dc2626"; 
+  }
+});
+</script>
+</body>
+</html>
